@@ -1,0 +1,21 @@
+databases:
+  - name: acehack-monitor-backend
+    plan: free
+    databaseName: acehack_monitor_backend
+    user: acehack_monitor_backend_user
+
+services:
+  - type: web
+    plan: free
+    name: monitor-backend
+    runtime: python
+    buildCommand: "./build.sh"
+    startCommand: "python -m gunicorn backend.asgi:application -k uvicorn.workers.UvicornWorker"    envVars:
+      - key: DATABASE_URL
+        fromDatabase:
+          name: mysitedb
+          property: connectionString
+      - key: SECRET_KEY
+        generateValue: true
+      - key: WEB_CONCURRENCY
+        value: 4
