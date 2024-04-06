@@ -51,3 +51,21 @@ def get_service(request, id):
     elif request.method == 'DELETE':
         service.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
+    
+@api_view(['GET'])
+def get_openai_recommendation(request, service_id):
+    from openai import OpenAI
+    client = OpenAI()
+
+    service = Service.objects.filter(id = service_id)
+
+    latest_monitor_log = Monitor_Log.objects.filter(service = service).order_by('-id')[:1]
+
+    response = client.chat.completions.create(
+    model="gpt-3.5-turbo",
+    messages=[
+        {"role": "system", "content": "You are a helpful assistant designed to help system technicians in fixing their issues."},
+        {"role": "system", "content": service.architecture},
+        {"role": "user", "content": latest_monitor_log.status}
+    ]
+    )
