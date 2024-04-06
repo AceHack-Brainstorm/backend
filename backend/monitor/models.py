@@ -16,4 +16,4 @@ class Monitor_Log(models.Model):
     ping = models.IntegerField()
     service = models.ForeignKey("Service", on_delete=models.CASCADE)
     def __str__(self):
-        return self.datetime
+        return self.datetime.__str__()

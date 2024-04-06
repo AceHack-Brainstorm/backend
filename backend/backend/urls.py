@@ -22,5 +22,7 @@ from monitor import views as monitor_view
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    path('monitors', monitor_view.get_services)
+    path('uptime-monitors', monitor_view.get_services),
+    path('add-uptime-monitor', monitor_view.add_service),
+    path('uptime-monitors/<id>', monitor_view.get_service),
 ]
