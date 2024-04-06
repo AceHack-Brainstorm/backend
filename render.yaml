@@ -9,6 +9,7 @@ services:
     plan: free
     name: monitor-backend
     runtime: python
+    region: singapore
     buildCommand: "./build.sh"
     startCommand: "python -m gunicorn backend.asgi:application -k uvicorn.workers.UvicornWorker"
     envVars:
