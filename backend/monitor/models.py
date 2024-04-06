@@ -7,8 +7,13 @@ class Service(models.Model):
     architecture = models.TextField()
     recommendation = models.TextField(blank=True)
 
+    def __str__(self) -> str:
+        return self.name
+
 class Monitor_Log(models.Model):
     datetime = models.DateTimeField()
     status = models.BooleanField()
     ping = models.IntegerField()
     service = models.ForeignKey("Service", on_delete=models.CASCADE)
+    def __str__(self):
+        return self.datetime
