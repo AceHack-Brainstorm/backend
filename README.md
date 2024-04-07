@@ -1,5 +1,7 @@
 # CloudSense Backend
 
+### Live Link : https://monitor-backend.codinger.net/uptime-monitors
+
 ### Tech Stack : 
 - Django Rest framework
 - 5 minute interval CRON job using django-cron and crontab
@@ -23,7 +25,7 @@ Optionally, for setting up CRON for a 5 minute status check, setup the following
 
 # Working
 ### The services are setup as individual monitors
-- As soon as a new service gets added, within the next 5 minutes it gets picked up by the CRON function and its respective status check logs are then populated in the mmonitoring_log database model.
+- As soon as a new service gets added, within the next 5 minutes it gets picked up by the CRON function and its respective status check logs are then populated in the monitoring_log database model.
 - Each service has a detailed explanation about the architecture and tech stack, so that the system can understand and have a technical context before recommending a proper solution.
 - The text in the architecture field is added as a system context in the OpenAI call.
 
