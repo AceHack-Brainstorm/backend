@@ -59,21 +59,24 @@ def get_recommendation(request, service_id):
 
     service = Service.objects.get(id = service_id)
 
-    latest_monitor_log = Monitor_Log.objects.filter(service = service).order_by('-id')[:1].first()
+    try:
+        latest_monitor_log = Monitor_Log.objects.filter(service = service).order_by('-id')[:1].first()
 
-    print(service.architecture)
-    print(latest_monitor_log.status_code)
+        print(service.architecture)
+        print(latest_monitor_log.status_code)
 
-    if latest_monitor_log.status_code != 200:
-        completion = client.chat.completions.create(
-            model="gpt-3.5-turbo",
-            messages=[
-                {"role": "system", "content": "You are a helpful assistant designed to help system technicians in fixing the server issues."},
-                {"role": "system", "content": "{}".format(service.architecture)},
-                {"role": "user", "content": "I checked the system, but the HTTP status is {}. Can you tell the possible solution?".format(latest_monitor_log.status_code)}
-            ]
-        )
-        print(completion.choices[0].message.content)
-        return Response({'recommendation' : completion.choices[0].message.content})
-    else:
-        return Response({'recommendation' : 'The service is up and running fine! :)'})
+        if latest_monitor_log.status_code != 200:
+            completion = client.chat.completions.create(
+                model="gpt-3.5-turbo",
+                messages=[
+                    {"role": "system", "content": "You are a helpful assistant designed to help system technicians in fixing the server issues."},
+                    {"role": "system", "content": "{}".format(service.architecture)},
+                    {"role": "user", "content": "I checked the system, but the HTTP status is {}. Can you tell the possible solution?".format(latest_monitor_log.status_code)}
+                ]
+            )
+            print(completion.choices[0].message.content)
+            return Response({'recommendation' : completion.choices[0].message.content})
+        else:
+            return Response({'recommendation' : 'The service is up and running fine! :)'})
+    except:
+        return Response({'recommendation' : 'Please wait some time after adding a new monitor.'})
