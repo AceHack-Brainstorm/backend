@@ -33,6 +33,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'monitor-backend.codinger.net']
 INSTALLED_APPS = [
     'corsheaders',
     'rest_framework',
+    'django_cron',
     'monitor',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -51,6 +52,10 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+]
+
+CRON_CLASSES = [
+    "monitor.cron.PingHosts",
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True
