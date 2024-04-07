@@ -27,6 +27,8 @@ DEBUG = True
 
 ALLOWED_HOSTS = ['127.0.0.1', 'monitor-backend.codinger.net']
 
+CSRF_TRUSTED_ORIGINS = ['https://monitor-backend.codinger.net']
+
 
 # Application definition
 
