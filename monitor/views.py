@@ -53,20 +53,27 @@ def get_service(request, id):
         return Response(status=status.HTTP_204_NO_CONTENT)
     
 @api_view(['GET'])
-def get_openai_recommendation(request, service_id):
+def get_recommendation(request, service_id):
     from openai import OpenAI
     client = OpenAI()
 
-    service = Service.objects.filter(id = service_id)
+    service = Service.objects.get(id = service_id)
 
-    latest_monitor_log = Monitor_Log.objects.filter(service = service).order_by('-id')[:1]
+    latest_monitor_log = Monitor_Log.objects.filter(service = service).order_by('-id')[:1].first()
 
-    if latest_monitor_log.status != 200:
-        response = client.chat.completions.create(
-        model="gpt-3.5-turbo",
-        messages=[
-            {"role": "system", "content": "You are a helpful assistant designed to help system technicians in fixing their issues."},
-            {"role": "system", "content": service.architecture},
-            {"role": "user", "content": latest_monitor_log.status}
-        ]
-    )
+    print(service.architecture)
+    print(latest_monitor_log.status_code)
+
+    if latest_monitor_log.status_code != 200:
+        completion = client.chat.completions.create(
+            model="gpt-3.5-turbo",
+            messages=[
+                {"role": "system", "content": "You are a helpful assistant designed to help system technicians in fixing the server issues."},
+                {"role": "system", "content": "{}".format(service.architecture)},
+                {"role": "user", "content": "I checked the system, but the HTTP status is {}. Can you tell the possible solution?".format(latest_monitor_log.status_code)}
+            ]
+        )
+        print(completion.choices[0].message.content)
+        return Response({'recommendation' : completion.choices[0].message.content})
+    else:
+        return Response({'recommendation' : 'The service is up and running fine! :)'})

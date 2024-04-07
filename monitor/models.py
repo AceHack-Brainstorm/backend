@@ -12,7 +12,7 @@ class Service(models.Model):
 
 class Monitor_Log(models.Model):
     datetime = models.DateTimeField()
-    status = models.BooleanField()
+    status_code = models.IntegerField()
     ping = models.IntegerField()
     service = models.ForeignKey("Service", on_delete=models.CASCADE)
     def __str__(self):

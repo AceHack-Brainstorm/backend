@@ -25,5 +25,5 @@ urlpatterns = [
     path('uptime-monitors', monitor_view.get_services),
     path('add-uptime-monitor', monitor_view.add_service),
     path('uptime-monitors/<id>', monitor_view.get_service),
-    path('get_openai_recommendation', monitor_view.get_openai_recommendation)
+    path('get_recommendation/<service_id>', monitor_view.get_recommendation)
 ]
